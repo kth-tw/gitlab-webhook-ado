@@ -37,6 +37,7 @@ export default class AdoService {
     return {
       id: result.id,
       title: result.fields['System.Title'],
+      type: result.fields['System.WorkItemType'],
       url: result._links.html.href,
     }
   }
