@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "functions-framework --target=TypescriptFunction",
+    "start": "functions-framework --target=GitlabWebhookAdoFunction",
     "prestart": "npm run build",
     "gcp-build": "npm run build"
   },

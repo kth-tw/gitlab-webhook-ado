@@ -1,5 +1,4 @@
 #! /bin/sh
-
-gcloud functions deploy TypescriptFunction \
-  --runtime nodejs16 \
+gcloud functions deploy GitlabWebhookAdoFunction \
+  --runtime nodejs18 \
   --trigger-http
