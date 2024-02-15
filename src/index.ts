@@ -9,7 +9,7 @@ ff.http('GitlabWebhookAdoFunction', async (req: ff.Request, res: ff.Response) =>
   }
 
   if (req.headers['x-gitlab-event'] === 'Merge Request Hook') {
-    const workItemId = (req.body?.object_attributes?.title as string).match(/(?<=^ADO-)\d*(?= )/)?.[0]
+    const workItemId = (req.body?.object_attributes?.title as string).match(/(?<=ADO-)\d*(?= )/)?.[0]
     if (workItemId) {
       const adoService = new AdoService(
         req.query['ado-organization'] as string,
