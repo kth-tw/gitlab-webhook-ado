@@ -9,7 +9,7 @@ export default class AdoService {
     }
   }
 
-  public async discussion (workItemId: number | string, text: string) {
+  private async discussion (workItemId: number | string, text: string) {
     const response = await fetch(`https://dev.azure.com/${this.config.organization}/${this.config.project}/_apis/wit/workItems/${workItemId}/comments?api-version=7.0-preview.3`, {
       method: 'POST',
       body: JSON.stringify({
@@ -40,5 +40,9 @@ export default class AdoService {
       type: result.fields['System.WorkItemType'],
       url: result._links.html.href,
     }
+  }
+
+  public async mergeRequestActionComment (workItemId: string, url: string, projectName: string, iid: number, action: string) {
+    await this.discussion(workItemId, `Merge request <a href="${url}">${projectName}!${iid}</a> is ${action}`)
   }
 }

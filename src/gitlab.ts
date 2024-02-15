@@ -9,7 +9,7 @@ export default class GitlabService {
     }
   }
 
-  public async createIssueNote (iid: number | string, text: string) {
+  private async createIssueNote (iid: number | string, text: string) {
     const response = await fetch(`https://gitlab.com/api/v4/projects/${this.config.project}/merge_requests/${iid}/notes`, {
       method: 'POST',
       headers: this.headers,
@@ -20,5 +20,9 @@ export default class GitlabService {
     if (!response.ok) {
       console.error(await response.text())
     }
+  }
+
+  public async linkToAdoComment (iid: number, type: string, id: number, url: string) {
+    await this.createIssueNote(iid, `link to Azure DevOps [${type} #${id}](${url})`)
   }
 }

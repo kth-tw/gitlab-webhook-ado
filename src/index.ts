@@ -17,25 +17,20 @@ ff.http('GitlabWebhookAdoFunction', async (req: ff.Request, res: ff.Response) =>
         req.query['ado-backlog'] as string,
         process.env.ADO_TOKEN!,
       )
-
-      const action = (() => {
-        switch (req.body?.object_attributes?.action) {
-          case 'open':
-            return 'opened'
-          case 'merge':
-            return 'merged'
-          default:
-            return undefined
-        }
-      })()
-      if (action) {
-        await adoService.discussion(workItemId, `Merge request <a href="${req.body?.object_attributes?.url}">${req.body?.project?.name}!${req.body?.object_attributes?.iid}</a> is ${action}`)
-      }
+      const gitlabService = new GitlabService(
+        req.body?.project?.id,
+        process.env.GITLAB_TOKEN!,
+      )
 
       if (req.body?.object_attributes?.action === 'open') {
+        await adoService.mergeRequestActionComment(workItemId, req.body?.object_attributes?.url, req.body?.project?.name, req.body?.object_attributes?.iid, 'opened')
+
         const workItem = await adoService.getWorkItem(workItemId)
-        const gitlabService = new GitlabService(req.body?.project?.id, process.env.GITLAB_TOKEN!)
-        await gitlabService.createIssueNote(req.body?.object_attributes?.iid, `link to Azure DevOps [${workItem?.type} #${workItem?.id}](${workItem?.url})`)
+        await gitlabService.linkToAdoComment(req.body?.object_attributes?.iid, workItem?.type, workItem?.id, workItem?.url)
+      }
+
+      if (req.body?.object_attributes?.action === 'merge') {
+        await adoService.mergeRequestActionComment(workItemId, req.body?.object_attributes?.url, req.body?.project?.name, req.body?.object_attributes?.iid, 'merged')
       }
     }
   }
