@@ -42,7 +42,7 @@ export default class AdoService {
     }
   }
 
-  public async mergeRequestActionComment (workItemId: string, url: string, projectName: string, iid: number, action: string) {
+  public async mergeRequestActionComment (workItemId: number, url: string, projectName: string, iid: number, action: string) {
     await this.discussion(workItemId, `Merge request <a href="${url}">${projectName}!${iid}</a> is ${action}`)
   }
 }
