@@ -1,3 +1,5 @@
+import type adoService from './ado'
+
 export default class GitlabService {
   private config: { project: number }
   private headers: any
@@ -22,7 +24,7 @@ export default class GitlabService {
     }
   }
 
-  public async linkToAdoComment (iid: number, type: string, id: number, url: string) {
-    await this.createIssueNote(iid, `link to Azure DevOps [${type} #${id}](${url})`)
+  public async linkToAdoComment (iid: number, workItem: NonNullable<Awaited<ReturnType<typeof adoService.prototype.getWorkItem>>>) {
+    await this.createIssueNote(iid, `link to Azure DevOps [${workItem.type} #${workItem.id}: ${workItem.title}](${workItem.url})`)
   }
 }

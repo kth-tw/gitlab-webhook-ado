@@ -44,7 +44,9 @@ ff.http('GitlabWebhookAdoFunction', async (req: ff.Request, res: ff.Response) =>
     }
     if (!dto.skip?.gitlab) {
       const workItem = await adoService.getWorkItem(dto.ado.workItemId)
-      await gitlabService.linkToAdoComment(dto.gitlab.iid, workItem?.type, workItem?.id, workItem?.url)
+      if (workItem) {
+        await gitlabService.linkToAdoComment(dto.gitlab.iid, workItem)
+      }
     }
   }
 
