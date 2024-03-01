@@ -61,8 +61,13 @@ ff.http('GitlabWebhookAdoFunction', async (req: ff.Request, res: ff.Response) =>
           iid: req.body?.object_attributes?.iid,
         },
       }
+
       if (req.body?.object_attributes?.action === 'open') {
         await mergeRequestComment({ ...mergeRequestCommentDto, state: 'opened' })
+      }
+
+      if (req.body?.object_attributes?.action === 'close') {
+        await mergeRequestComment({ ...mergeRequestCommentDto, state: 'closed', skip: { gitlab: true } })
       }
 
       if (req.body?.object_attributes?.action === 'merge') {
