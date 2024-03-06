@@ -31,8 +31,7 @@ ff.http('GitlabWebhookAdoFunction', async (req: ff.Request, res: ff.Response) =>
     const adoService = new AdoService(
       req.query['ado-organization'] as string,
       req.query['ado-project'] as string,
-      req.query['ado-backlog'] as string,
-      process.env.ADO_TOKEN!,
+      process.env[`ADO_TOKEN_${req.query['ado-project']}`]!,
     )
     const gitlabService = new GitlabService(
       req.body?.project?.id,

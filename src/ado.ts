@@ -1,8 +1,8 @@
 export default class AdoService {
-  private config: { organization: string; project: string; backlog: string}
+  private config: { organization: string; project: string}
   private headers: any
-  constructor (organization: string, project: string, backlog: string, token: string) {
-    this.config = { organization, project, backlog }
+  constructor (organization: string, project: string, token: string) {
+    this.config = { organization, project }
     this.headers = {
       Authorization: `Basic ${Buffer.from(`:${token}`).toString('base64')}`,
       'Content-Type': 'application/json',
